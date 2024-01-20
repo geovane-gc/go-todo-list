@@ -6,7 +6,7 @@ var cfg *config
 
 type config struct {
 	API APIConfig
-	DB DBConfig
+	DB  DBConfig
 }
 
 type APIConfig struct {
@@ -14,44 +14,44 @@ type APIConfig struct {
 }
 
 type DBConfig struct {
-	Host string
-	Port string
-	User string
-	Pass string
+	Host     string
+	Port     string
+	User     string
+	Pass     string
 	Database string
 }
 
 // Initialize project configurations
 func init() {
-	viper.SetDefault("api.port", "3000");
-	viper.SetDefault("database.host", "localhost");
-	viper.SetDefault("database.port", "5432");
+	viper.SetDefault("api.port", "3000")
+	viper.SetDefault("database.host", "localhost")
+	viper.SetDefault("database.port", "5432")
 }
 
 // Load project configurations
 func Load() error {
-	viper.SetConfigName("config");
-	viper.SetConfigType("toml");
-	viper.AddConfigPath(".");
+	viper.SetConfigName("config")
+	viper.SetConfigType("toml")
+	viper.AddConfigPath(".")
 
-	err := viper.ReadInConfig();
+	err := viper.ReadInConfig()
 	if err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
 			return err
 		}
 	}
 
-	cfg = new(config);
+	cfg = new(config)
 
-	cfg.API = APIConfig {
+	cfg.API = APIConfig{
 		Port: viper.GetString("api.port"),
 	}
 
-	cfg.DB = DBConfig {
-		Host: viper.GetString("database.host"),
-		Port: viper.GetString("database.port"),
-		User: viper.GetString("database.user"),
-		Pass: viper.GetString("database.pass"),
+	cfg.DB = DBConfig{
+		Host:     viper.GetString("database.host"),
+		Port:     viper.GetString("database.port"),
+		User:     viper.GetString("database.user"),
+		Pass:     viper.GetString("database.pass"),
 		Database: viper.GetString("database.name"),
 	}
 
@@ -63,5 +63,5 @@ func GetDB() DBConfig {
 }
 
 func GetServerPort() string {
-	return cfg.API.Port	
+	return cfg.API.Port
 }
