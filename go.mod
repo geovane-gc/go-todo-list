@@ -2,7 +2,10 @@ module todo-list
 
 go 1.21.6
 
-require github.com/spf13/viper v1.18.2
+require (
+	github.com/lib/pq v1.10.9
+	github.com/spf13/viper v1.18.2
+)
 
 require (
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
