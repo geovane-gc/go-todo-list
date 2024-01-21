@@ -2,7 +2,7 @@ package models
 
 import "todo-list/db"
 
-func Insert(todo Todo) (id int64, err error) {
+func Create(todo Todo) (id int64, err error) {
 	dbConnection, err := db.OpenConnection()
 	if err != nil {
 		return
