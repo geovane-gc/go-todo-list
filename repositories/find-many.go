@@ -1,8 +1,11 @@
-package models
+package repositories
 
-import "todo-list/db"
+import (
+	"todo-list/db"
+	"todo-list/models"
+)
 
-func FindMany() (todos []Todo, err error) {
+func FindMany() (todos []models.Todo, err error) {
 	dbConnection, err := db.OpenConnection()
 	if err != nil {
 		return
@@ -16,7 +19,7 @@ func FindMany() (todos []Todo, err error) {
 	}
 
 	for rows.Next() {
-		var todo Todo
+		var todo models.Todo
 
 		err = rows.Scan(&todo.ID, &todo.Title, &todo.Description, &todo.Done)
 		if err != nil {

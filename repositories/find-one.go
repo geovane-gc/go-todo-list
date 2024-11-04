@@ -1,8 +1,11 @@
-package models
+package repositories
 
-import "todo-list/db"
+import (
+	"todo-list/db"
+	"todo-list/models"
+)
 
-func FindOne(id int64) (todo Todo, err error) {
+func FindOne(id int64) (todo models.Todo, err error) {
 	dbConnection, err := db.OpenConnection()
 	if err != nil {
 		return

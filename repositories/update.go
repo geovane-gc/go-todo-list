@@ -1,8 +1,11 @@
-package models
+package repositories
 
-import "todo-list/db"
+import (
+	"todo-list/db"
+	"todo-list/models"
+)
 
-func Update(id int64, todo Todo) (int64, error) {
+func Update(id int64, todo *models.Todo) (int64, error) {
 	dbConnection, err := db.OpenConnection()
 	if err != nil {
 		return 0, err
