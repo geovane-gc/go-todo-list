@@ -4,16 +4,17 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"todo-list/configs"
 	"todo-list/routes"
 
 	"github.com/go-chi/chi"
 )
 
-func main() {
+func run() error {
 	err := configs.Load()
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	r := chi.NewRouter()
@@ -21,4 +22,13 @@ func main() {
 
 	log.Println("Server started on port", configs.GetServerPort())
 	http.ListenAndServe(fmt.Sprintf(":%s", configs.GetServerPort()), r)
+
+	return nil
+}
+
+func main() {
+	if err := run(); err != nil {
+		fmt.Fprintf(os.Stderr, "%s\n", err)
+		os.Exit(1)
+	}
 }
