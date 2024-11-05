@@ -29,7 +29,7 @@ func Update(w http.ResponseWriter, r *http.Request) {
 	var resp map[string]any
 	rowsAffected, err := repositories.Update(int64(id), &todo)
 	if err != nil {
-		resp = map[string]any{"message": fmt.Sprintf("Error while updating todo: %v", err)}
+		resp = map[string]any{"error": fmt.Sprintf("Error while updating todo: %v", err)}
 	} else {
 		resp = map[string]any{"message": "Todo updated successfully"}
 	}

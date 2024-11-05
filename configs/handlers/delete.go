@@ -22,15 +22,15 @@ func Remove(w http.ResponseWriter, r *http.Request) {
 	var resp map[string]any
 	rowsAffected, err := repositories.Remove(int64(id))
 	if err != nil {
-		resp = map[string]any{"message": fmt.Sprintf("Error while getting todo: %v", err)}
+		resp = map[string]any{"error": fmt.Sprintf("Error while getting todo: %v", err)}
 	} else {
 		resp = map[string]any{"message": fmt.Sprintf("Todo deleted successfully. Rows affected: %d", rowsAffected)}
 	}
 
 	if rowsAffected == 0 {
-		resp = map[string]any{"message": fmt.Sprintf("Todo with ID %d not found", id)}
+		resp = map[string]any{"error": fmt.Sprintf("Todo with ID %d not found", id)}
 	} else if rowsAffected > 1 {
-		resp = map[string]any{"message": fmt.Sprintf("Error while deleting todo with ID %d, found multiple results with same ID", id)}
+		resp = map[string]any{"error": fmt.Sprintf("Error while deleting todo with ID %d, found multiple results with same ID", id)}
 	}
 
 	if err = utils.EncodeJSON(w, r, http.StatusOK, resp); err != nil {

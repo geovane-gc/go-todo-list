@@ -11,7 +11,7 @@ func FindMany(w http.ResponseWriter, r *http.Request) {
 	var resp map[string]any
 	todos, err := repositories.FindMany()
 	if err != nil {
-		resp = map[string]any{"message": fmt.Sprintf("Error while listing todos: %v", err)}
+		resp = map[string]any{"error": fmt.Sprintf("Error while listing todos: %v", err)}
 	} else {
 		resp = map[string]any{"data": todos}
 	}
