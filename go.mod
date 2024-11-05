@@ -7,6 +7,8 @@ require (
 	github.com/spf13/viper v1.18.2
 )
 
+require github.com/joho/godotenv v1.5.1
+
 require (
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/go-chi/chi v1.5.5

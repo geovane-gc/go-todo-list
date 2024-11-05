@@ -1,6 +1,11 @@
 package configs
 
-import "github.com/spf13/viper"
+import (
+	"log"
+
+	"github.com/joho/godotenv"
+	"github.com/spf13/viper"
+)
 
 var cfg *config
 
@@ -21,20 +26,17 @@ type DBConfig struct {
 	Database string
 }
 
-// Initialize project configurations
-func init() {
-	viper.SetDefault("api.port", "3000")
-	viper.SetDefault("database.host", "localhost")
-	viper.SetDefault("database.port", "5432")
-}
-
-// Load project configurations
 func Load() error {
-	viper.SetConfigName("config")
-	viper.SetConfigType("toml")
-	viper.AddConfigPath(".")
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Printf(".env file not found: %v", err)
+	}
 
-	err := viper.ReadInConfig()
+	viper.SetConfigFile(".env")
+	viper.SetConfigType("env")
+	viper.AutomaticEnv()
+
+	err = viper.ReadInConfig()
 	if err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
 			return err
@@ -44,15 +46,15 @@ func Load() error {
 	cfg = new(config)
 
 	cfg.API = APIConfig{
-		Port: viper.GetString("api.port"),
+		Port: viper.GetString("API_PORT"),
 	}
 
 	cfg.DB = DBConfig{
-		Host:     viper.GetString("database.host"),
-		Port:     viper.GetString("database.port"),
-		User:     viper.GetString("database.user"),
-		Pass:     viper.GetString("database.pass"),
-		Database: viper.GetString("database.name"),
+		Host:     viper.GetString("DATABASE_HOST"),
+		Port:     viper.GetString("DATABASE_PORT"),
+		User:     viper.GetString("DATABASE_USER"),
+		Pass:     viper.GetString("DATABASE_PASS"),
+		Database: viper.GetString("DATABASE_NAME"),
 	}
 
 	return nil
