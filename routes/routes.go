@@ -2,8 +2,8 @@ package routes
 
 import (
 	"net/http"
-	"todo-list/configs/handlers"
 	"todo-list/middlewares"
+	"todo-list/services"
 
 	"github.com/go-chi/chi"
 )
@@ -11,9 +11,9 @@ import (
 func RegisterRoutes(r *chi.Mux) {
 	r.Handle("/", http.NotFoundHandler())
 
-	r.Post("/todos", middlewares.AdminValidation(handlers.Create))
-	r.Get("/todos", http.HandlerFunc(handlers.FindMany))
-	r.Get("/todos/{id}", http.HandlerFunc(handlers.FindOne))
-	r.Put("/todos/{id}", middlewares.AdminValidation(handlers.Update))
-	r.Delete("/todos/{id}", middlewares.AdminValidation(handlers.Remove))
+	r.Post("/todos", middlewares.AdminValidation(services.Create))
+	r.Get("/todos", http.HandlerFunc(services.FindMany))
+	r.Get("/todos/{id}", http.HandlerFunc(services.FindOne))
+	r.Put("/todos/{id}", middlewares.AdminValidation(services.Update))
+	r.Delete("/todos/{id}", middlewares.AdminValidation(services.Remove))
 }
