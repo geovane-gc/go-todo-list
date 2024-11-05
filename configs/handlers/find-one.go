@@ -1,12 +1,12 @@
 package handlers
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"strconv"
 	"todo-list/repositories"
+	"todo-list/utils"
 
 	"github.com/go-chi/chi"
 )
@@ -22,12 +22,13 @@ func FindOne(w http.ResponseWriter, r *http.Request) {
 	var resp map[string]any
 	todo, err := repositories.FindOne(int64(id))
 	if err != nil {
-		resp = map[string]any{"StatusCode": http.StatusInternalServerError, "Message": fmt.Sprintf("Error while getting todo: %v", err)}
+		resp = map[string]any{"message": fmt.Sprintf("Error while getting todo: %v", err)}
 	} else {
-		resp = map[string]any{"StatusCode": http.StatusOK, "Data": todo}
+		resp = map[string]any{"data": todo}
 	}
 
-	w.Header().Add("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(resp)
-
+	if err = utils.EncodeJSON(w, r, http.StatusOK, resp); err != nil {
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
 }

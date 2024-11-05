@@ -1,22 +1,24 @@
 package handlers
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"todo-list/repositories"
+	"todo-list/utils"
 )
 
 func FindMany(w http.ResponseWriter, r *http.Request) {
 	var resp map[string]any
 	todos, err := repositories.FindMany()
 	if err != nil {
-		resp = map[string]any{"StatusCode": http.StatusInternalServerError, "Message": fmt.Sprintf("Error while listing todos: %v", err)}
+		resp = map[string]any{"message": fmt.Sprintf("Error while listing todos: %v", err)}
 	} else {
-		resp = map[string]any{"StatusCode": http.StatusOK, "Data": todos}
+		resp = map[string]any{"data": todos}
 	}
 
-	w.Header().Add("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(resp)
+	if err = utils.EncodeJSON(w, r, http.StatusOK, resp); err != nil {
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
 
 }
